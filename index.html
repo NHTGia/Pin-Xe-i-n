@@ -59,44 +59,49 @@
 
 <script>
     let maxKm = 35;
-    // Tự động tải số km đã lưu từ bộ nhớ điện thoại
     let currentKm = parseFloat(localStorage.getItem('currentKm')) || 0;
     updateUI();
 
-    // Hàm thêm số km nhập tay
     function addCustomKm() {
         let inputEl = document.getElementById('customKm');
         let val = parseFloat(inputEl.value);
-        
         if (isNaN(val) || val <= 0) {
             alert("Bro vui lòng nhập một số km hợp lệ nhé!");
             return;
         }
-        
         addKm(val);
-        inputEl.value = ''; // Nhập xong tự xóa chữ trong ô để lần sau nhập tiếp
+        inputEl.value = '';
     }
 
-    // Hàm xử lý cộng dồn kmchung
     function addKm(km) {
         currentKm = currentKm + km;
         if (currentKm > maxKm) currentKm = maxKm;
-        
-        // Làm tròn lấy 1 chữ số thập phân cho đẹp (ví dụ 3.5km)
         currentKm = Math.round(currentKm * 10) / 10;
-        
         localStorage.setItem('currentKm', currentKm);
         updateUI();
     }
 
-    // Hàm Reset khi sạc đầy bình
     function resetKm() {
-        if(confirm("Bro đã sạc đầy bình và muốn reset đúng không?")) {
+        if(confirm("Bro đã sạc đầy bình supai và muốn reset đúng không?")) {
             currentKm = 0;
             localStorage.setItem('currentKm', 0);
             updateUI();
         }
     }
 
-    // Hàm cập nhật giao diện
-    function updateUI()
+    function updateUI() {
+        document.getElementById('distance').innerText = currentKm;
+        let percent = (currentKm / maxKm) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        if(percent >= 85) {
+            document.getElementById('progress').style.background = '#f44336';
+            document.getElementById('alert-msg').style.display = 'block';
+        } else {
+            document.getElementById('progress').style.background = '#4CAF50';
+            document.getElementById('alert-msg').style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
