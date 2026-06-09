@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canh Pin Xe Điện</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNhbmggUGluIFhlIMSQaeG7h24iLAogICJzaG9ydF9uYW1lIjogIkNhbmggUGluIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmNGY0ZjkiLAogICJ0aGVtZV9jb2xvciI6ICIjMjBiMmFhIgp9">
     <style>
         * { box-sizing: border-box; }
         body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f9; padding: 20px; margin: 0; }
@@ -12,8 +13,6 @@
         .distance-text { font-size: 18px; font-weight: bold; margin: 15px 0; color: #444; }
         .progress-bar { background: #e0e0e0; border-radius: 10px; height: 25px; width: 100%; margin-bottom: 20px; overflow: hidden; }
         .progress { background: #4CAF50; height: 100%; width: 0%; transition: width 0.3s; }
-        
-        /* Khu vực nhập số km tùy chỉnh */
         .custom-input-box { border: 2px dashed #008CBA; border-radius: 10px; padding: 12px; margin-bottom: 15px; background: #fdfdfd; }
         .input-label { font-size: 14px; font-weight: bold; color: #008CBA; margin-bottom: 8px; text-align: left; display: block; }
         .input-group { display: table; width: 100%; }
@@ -21,8 +20,6 @@
         .input-cell-right { display: table-cell; width: 35%; vertical-align: top; }
         .input-km { width: 100%; padding: 10px; font-size: 15px; border: 1px solid #ccc; border-radius: 6px; text-align: center; }
         .btn-add { background: #00A2D1; color: white; border: none; padding: 10px; font-size: 15px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
-        
-        /* Các nút bấm nhanh */
         .btn { background: #20b2aa; color: white; border: none; padding: 12px 20px; font-size: 15px; border-radius: 8px; cursor: pointer; margin-bottom: 10px; width: 100%; font-weight: bold; }
         .btn-danger { background: #f44336; margin-top: 5px; }
         .alert { color: #f44336; font-weight: bold; margin-top: 15px; display: none; font-size: 15px; background: #ffebee; padding: 8px; border-radius: 5px; }
@@ -65,10 +62,7 @@
     function addCustomKm() {
         let inputEl = document.getElementById('customKm');
         let val = parseFloat(inputEl.value);
-        if (isNaN(val) || val <= 0) {
-            alert("Bro vui lòng nhập một số km hợp lệ nhé!");
-            return;
-        }
+        if (isNaN(val) || val <= 0) { alert("Bro vui lòng nhập một số km hợp lệ nhé!"); return; }
         addKm(val);
         inputEl.value = '';
     }
@@ -82,7 +76,7 @@
     }
 
     function resetKm() {
-        if(confirm("Bro đã sạc đầy bình và muốn reset đúng không?")) {
+        if(confirm("Bro đã sạc đầy bình supai và muốn reset đúng không?")) {
             currentKm = 0;
             localStorage.setItem('currentKm', 0);
             updateUI();
@@ -100,6 +94,11 @@
             document.getElementById('progress').style.background = '#4CAF50';
             document.getElementById('alert-msg').style.display = 'none';
         }
+    }
+
+    // ĐOẠN CODE ÉP CHẠY OFFLINE (BẮT KHỦNG LONG ĐI NGỦ)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZSA9PiB7IHNlbGYuc2tpcFdhaXRpbmcoKTsgfSk7CnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCBlID0+IHsgZS53YWl0VW50aWwoc2VsZi5jbGllbnRzLmNsYWltKCkpOyB9KTsKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGUgPT4geyBlLnJlc3BvbmRXaXRoKGZldGNoKGUucmVxdWVzdCkuY2F0Y2goKCkgPT4gY2FjaGVzLm1hdGNoKGUucmVxdWVzdCkpKTsgfSk7').catch(() => {});
     }
 </script>
 
